@@ -1,0 +1,15 @@
+extends: ../default.yaml
+experiment:
+  id: P3_hybrid_alpha
+  description: Weighted normalized-score fusion ablation
+  selection_split: validation
+  status: configured_not_benchmarked
+  note: Alpha may only be selected on validation.
+paths:
+  experiment_dir: experiments/P3_hybrid_alpha
+retrieval:
+  mode: hybrid_alpha
+  fusion:
+    alpha: 0.5
+reranking:
+  enabled: false

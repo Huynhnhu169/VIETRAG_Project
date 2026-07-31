@@ -1,0 +1,57 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.pytest-tmp/
+.test-temp-*/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# Restricted or generated data
+data/raw/*
+!data/raw/.gitkeep
+data/interim/*
+!data/interim/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+data/manifests/*
+!data/manifests/.gitkeep
+data/annotations/
+
+# Model and retrieval artifacts
+indexes/
+models/
+checkpoints/
+*.faiss
+*.npy
+*.npz
+*.pt
+*.pth
+*.safetensors
+
+# Experiment outputs
+experiments/*/predictions.jsonl
+experiments/*/metrics.json
+experiments/*/metrics.csv
+experiments/*/run_metadata.json
+reports/figures/*
+!reports/figures/.gitkeep
+reports/tables/*
+!reports/tables/.gitkeep
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+VIETRAG_PROJECT_CONTEXT.md
+tests/

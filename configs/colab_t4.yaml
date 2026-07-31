@@ -1,0 +1,22 @@
+extends: default.yaml
+
+project:
+  name: vietrag-policy-assistant-colab-t4
+
+retrieval:
+  mode: hybrid_rrf
+  dense:
+    backend: sentence_transformers
+    model_id: BAAI/bge-m3
+    device: cuda
+    batch_size: 8
+
+reranking:
+  enabled: false
+  backend: cross_encoder
+  model_id: BAAI/bge-reranker-v2-m3
+  device: cuda
+  batch_size: 4
+
+evaluation:
+  split: validation

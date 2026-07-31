@@ -1,0 +1,12 @@
+extends: ../default.yaml
+experiment:
+  id: P0_bm25
+  description: BM25 retrieval-only baseline
+  selection_split: validation
+  status: configured_not_benchmarked
+paths:
+  experiment_dir: experiments/P0_bm25
+retrieval:
+  mode: bm25
+reranking:
+  enabled: false

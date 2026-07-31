@@ -1,0 +1,4 @@
+extends: colab_t4.yaml
+
+reranking:
+  enabled: true

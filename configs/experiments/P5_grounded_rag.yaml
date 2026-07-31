@@ -1,0 +1,16 @@
+extends: ../default.yaml
+experiment:
+  id: P5_grounded_rag
+  description: P4 retrieval with grounded extractive answers, citations, and abstention
+  selection_split: validation
+  status: configured_not_benchmarked
+  note: The abstention threshold may only be selected on validation.
+paths:
+  experiment_dir: experiments/P5_grounded_rag
+retrieval:
+  mode: hybrid_rrf
+reranking:
+  enabled: true
+generation:
+  provider: extractive
+  abstention_threshold: 0.18

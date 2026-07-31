@@ -1,0 +1,14 @@
+extends: ../default.yaml
+experiment:
+  id: P4_hybrid_reranker
+  description: Selected hybrid retrieval followed by top-20 to top-5 reranking
+  selection_split: validation
+  status: configured_not_benchmarked
+paths:
+  experiment_dir: experiments/P4_hybrid_reranker
+retrieval:
+  mode: hybrid_rrf
+reranking:
+  enabled: true
+  input_k: 20
+  output_k: 5

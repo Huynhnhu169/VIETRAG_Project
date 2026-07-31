@@ -1,0 +1,12 @@
+extends: ../default.yaml
+experiment:
+  id: P1_dense
+  description: Dense retrieval-only baseline
+  selection_split: validation
+  status: configured_not_benchmarked
+paths:
+  experiment_dir: experiments/P1_dense
+retrieval:
+  mode: dense
+reranking:
+  enabled: false

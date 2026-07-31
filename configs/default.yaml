@@ -1,0 +1,64 @@
+project:
+  name: vietrag-policy-assistant
+  seed: 42
+  log_level: INFO
+
+paths:
+  corpus: data/processed/corpus.jsonl
+  queries: data/processed/queries.jsonl
+  context_manifest: data/manifests/context_disjoint.json
+  document_manifest: data/manifests/document_disjoint_folds.json
+  index_dir: indexes/default
+  experiment_dir: experiments/default
+
+data:
+  source: ViRHE4QA
+  split_protocol: context-disjoint
+  split_ratios:
+    train: 0.7
+    validation: 0.15
+    test: 0.15
+  document_folds: 5
+
+retrieval:
+  mode: hybrid_rrf
+  top_k: 10
+  candidate_k: 20
+  bm25:
+    k1: 1.5
+    b: 0.75
+  dense:
+    # "hashing" is deterministic and offline. Configure a Sentence Transformers
+    # model only after comparing candidates on validation data.
+    backend: hashing
+    model_id: BAAI/bge-m3
+    model_revision: null
+    dimensions: 384
+    normalize_embeddings: true
+    device: auto
+    batch_size: 8
+  fusion:
+    rrf_k: 60
+    alpha: 0.5
+
+reranking:
+  enabled: true
+  backend: lexical
+  model_id: BAAI/bge-reranker-v2-m3
+  model_revision: null
+  input_k: 20
+  output_k: 5
+  device: auto
+  batch_size: 4
+
+generation:
+  provider: extractive
+  max_evidence: 3
+  abstention_threshold: 0.18
+  abstention_message: "Tôi chưa tìm thấy đủ bằng chứng trong các văn bản hiện có để trả lời câu hỏi này."
+  clarification_message: "Câu hỏi chưa đủ thông tin. Bạn vui lòng nêu rõ đối tượng, chương trình hoặc thời điểm áp dụng."
+
+evaluation:
+  split: validation
+  cutoffs: [1, 5, 10]
+  save_query_predictions: true

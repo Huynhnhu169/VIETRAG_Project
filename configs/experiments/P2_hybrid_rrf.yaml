@@ -1,0 +1,12 @@
+extends: ../default.yaml
+experiment:
+  id: P2_hybrid_rrf
+  description: BM25 and dense retrieval fused with reciprocal rank fusion
+  selection_split: validation
+  status: configured_not_benchmarked
+paths:
+  experiment_dir: experiments/P2_hybrid_rrf
+retrieval:
+  mode: hybrid_rrf
+reranking:
+  enabled: false
