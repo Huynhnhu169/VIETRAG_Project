@@ -52,6 +52,3 @@ reports/tables/*
 .vscode/
 .DS_Store
 Thumbs.db
-
-VIETRAG_PROJECT_CONTEXT.md
-tests/
