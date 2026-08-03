@@ -67,13 +67,17 @@ def main() -> None:
         if args.rerank or config.get("reranking", {}).get("enabled", False)
         else None
     )
+    evaluation_config = config.get("evaluation", {})
+    cutoffs = tuple(int(value) for value in evaluation_config.get("cutoffs", [1, 5, 10]))
+    reranking_config = config.get("reranking", {})
     rows, summary = evaluate_retriever(
         retriever,
         queries,
-        top_k=10,
+        top_k=int(config["retrieval"].get("top_k", max(cutoffs))),
+        cutoffs=cutoffs,
         reranker=reranker,
-        reranker_input_k=20,
-        reranker_output_k=5,
+        reranker_input_k=int(reranking_config.get("input_k", 20)),
+        reranker_output_k=int(reranking_config.get("output_k", 5)),
     )
     metadata = collect_run_metadata(seed)
     metadata.update(
@@ -96,6 +100,9 @@ def main() -> None:
                 "rrf_k": config["retrieval"]["fusion"]["rrf_k"],
                 "alpha": config["retrieval"]["fusion"]["alpha"],
                 "abstention_threshold": config["generation"]["abstention_threshold"],
+                "evaluation_cutoffs": list(cutoffs),
+                "reranker_input_k": int(reranking_config.get("input_k", 20)),
+                "reranker_output_k": int(reranking_config.get("output_k", 5)),
             },
             "configuration_file": str(args.config),
         }

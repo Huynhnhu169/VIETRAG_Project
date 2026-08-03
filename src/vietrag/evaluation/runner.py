@@ -89,6 +89,11 @@ def evaluate_retriever(
     reranker_input_k: int = 20,
     reranker_output_k: int = 5,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    if not cutoffs or any(cutoff < 1 for cutoff in cutoffs):
+        raise ValueError("evaluation cutoffs must contain positive integers")
+    # Evaluation must retain enough reranked results for every reported cutoff.
+    # The generation pipeline may still select only its configured top evidence.
+    evaluation_output_k = max(reranker_output_k, max(cutoffs))
     rows: list[dict[str, Any]] = []
     for query in queries:
         started = time.perf_counter()
@@ -103,7 +108,7 @@ def evaluate_retriever(
             candidates = reranker.rerank(
                 query.query,
                 candidates[:reranker_input_k],
-                top_k=reranker_output_k,
+                top_k=evaluation_output_k,
             )
             reranking_ms = (time.perf_counter() - reranking_started) * 1000
         ranked_ids = [candidate.context_id for candidate in candidates]

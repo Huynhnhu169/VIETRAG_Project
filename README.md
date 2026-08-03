@@ -190,14 +190,32 @@ latency to its experiment directory.
 
 ## Results
 
-**ViRHE4QA, EduCoQA, and model-backed benchmark results are pending.** They were
-not run because restricted datasets and optional model weights are not bundled.
-No estimated metrics are reported.
+The first model-backed validation run is complete on 1,544 clean ViRHE4QA
+queries from the frozen context-disjoint split. These are measured validation
+results, not test-set claims.
 
-Local synthetic smoke artifacts can be produced with the commands above. They
-validate plumbing and reproducibility only; the six-context fixture is too
-small and easy to support a quality claim. Generated artifacts are ignored by
-Git until deliberately reviewed.
+| Pipeline | Recall@1 | Recall@5 | Recall@10 | MRR@10 | nDCG@10 | Mean latency |
+|---|---:|---:|---:|---:|---:|---:|
+| P0 BM25 | 0.7085 | 0.9229 | 0.9624 | 0.8036 | 0.8427 | 2.22 ms |
+| P1 BGE-M3 | 0.5920 | 0.8329 | 0.8983 | 0.6956 | 0.7448 | 41.40 ms |
+| P2 hybrid RRF | 0.6775 | 0.9113 | 0.9579 | 0.7765 | 0.8208 | 44.80 ms |
+| P4 hybrid + reranker | **0.8497** | **0.9741** | n/a | **0.9036** | **0.9216** | 2,623.97 ms |
+
+The archived P4 run retained five reranked passages, so its emitted
+`recall@10` duplicated Recall@5 and is not reported. The evaluator now retains
+enough reranked results for all configured cutoffs; P4 must be rerun for a true
+Recall@10. P4 is the quality leader, while BM25 remains the practical low-
+latency mode. Dense-only and equal-weight RRF do not beat BM25 on this split.
+
+See [`reports/validation_results.md`](reports/validation_results.md) for paired
+bootstrap confidence intervals, query-level transition counts, limitations,
+and remaining experiments. EduCoQA, noisy-query robustness, P3 alpha fusion,
+generation quality, abstention tuning, and the guarded test evaluation remain
+pending.
+
+The tracked synthetic fixture remains useful only for smoke tests. Restricted
+data, query-level predictions, model artifacts, and generated indexes remain
+Git-ignored.
 
 ## Grounded output examples
 
